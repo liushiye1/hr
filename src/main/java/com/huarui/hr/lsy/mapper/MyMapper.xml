@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.huarui.hr.lsy.mapper.MyMapper">
+ 	<select id="getTableCount" resultType="int">
+ 		<!-- *最好是写上指定的列 -->
+ 		select count(*) from ${tabName}
+ 	</select>
+ </mapper>

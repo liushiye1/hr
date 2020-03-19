@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.huarui.hr.lsy.mapper.SysRoleMapper">
+ 	<resultMap type="SysRole" id="myRole">
+ 		<id column="role_id" property="role_id"></id>
+ 		<result column="role_name" property="role_name"/>
+ 		<result column="role_desc" property="role_desc"/>
+ 		<result column="role_flag" property="role_flag"/>
+ 	</resultMap>
+ 	
+ 	<resultMap type="SysRole" id="roleRight" extends="myRole">
+ 		<collection column="role_id" property="rights" select="com.huarui.hr.lsy.mapper.SysRightMapper.queryRightAndRoleByRoleId"></collection>
+ 	</resultMap>
+ 	<select id="queryRoleById" resultMap="roleRight">
+ 		select * from sys_role where role_id=#{rid}
+ 	</select>
+ 	
+ 	<select id="queryRoleById2" resultMap="myRole">
+ 		select * from sys_role where role_id=#{rid}
+ 	</select>
+ 	
+ 	<select id="queryRole" resultMap="myRole">
+ 		select * from sys_role
+ 	</select>
+ </mapper>

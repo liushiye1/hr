@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 属性配置文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 注册其它的配置文件 -->
+    <import resource="application_*.xml"/>
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+    	<property name="driverClassName" value="${driver}"></property>
+    	<property name="url" value="${url}"></property>
+    	<property name="username" value="${name}"></property>
+    	<property name="password" value="${pwd}"></property>
+    	<!-- 配置链接池信息 -->
+    </bean>
+    <!-- 配置sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource"></property>
+    	<!-- 给实体类取别名 -->
+    	<property name="typeAliasesPackage" value="com.huarui.hr.entity"></property>
+    </bean>
+    <!-- 扫描注册mapper文件 -->
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+     	<!--sqlSessionFactoryBeanName：是一个字符串类型  -->
+     	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    	<!-- 扫描指定的包 -->
+    	<property name="basePackage" value="com.huarui.hr.*.mapper"></property>
+     </bean>
+    
+    <!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<!-- /springmvc5/WEB-INF/index.jsp -->
+    	<property name="prefix" value="/"></property><!-- 前缀 -->
+    	<property name="suffix" value=".jsp"></property><!-- 加后缀 -->
+    </bean>
+    <!-- 创建事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 开启注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- 开始注解 -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!-- 扫描包 -->
+    <context:component-scan base-package="com.huarui.hr"></context:component-scan>
+    <!-- 放行静态资源 -->
+    <mvc:default-servlet-handler/>
+</beans>
