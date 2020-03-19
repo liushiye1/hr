@@ -3,6 +3,7 @@ package com.huarui.hr.entity;
 public class SysRight {
 	private Integer right_code;//ÕâÊÇÖ÷¼ü
 	private Integer right_parent_code;//haha 
+	
 	private String right_type;
 	private String right_text;
 	private String right_url;
